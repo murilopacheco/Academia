@@ -8,5 +8,14 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Academia';
 
+  toogleSideBar() {
+    const classe: string = document.getElementById('sidebar').classList.value;
+    if (classe === 'active') {
+      document.getElementById('sidebar').classList.remove('active');
+    } else {
+      document.getElementById('sidebar').classList.add('active');
+    }
+  }
+
 
 }

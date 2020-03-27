@@ -8,7 +8,7 @@
         <form #formUsuario="ngForm" (ngSubmit)="onSubmit(formUsuario)" class="example-form">
           <mat-form-field class="example-full-width">
             <mat-label>Nome</mat-label>
-            <input matInput placeholder="Ex. João" [(ngModel)]="aluno.nome" name="nome">
+            <input type="text" matInput placeholder="Ex. João" [(ngModel)]="aluno.nome" name="nome">
           </mat-form-field>
 
           <mat-form-field class="example-full-width">
@@ -26,7 +26,16 @@
             <input matInput placeholder="Ex. Rua teste setor central" [(ngModel)]="aluno.endereco" name="endereco">
           </mat-form-field>
 
-          <button mat-button type="submit" class="btn btn-primary">Salvar</button>
+          <mat-form-field>
+            <mat-label>Data de Nascimento</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+            <hr>
+            <button mat-button type="submit" class="btn btn-primary">Salvar</button>
+
 
         </form>
       </div>
