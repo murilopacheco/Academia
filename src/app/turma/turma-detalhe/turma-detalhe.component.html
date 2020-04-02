@@ -1,0 +1,91 @@
+<div class="card" style="width: 100%">
+  <div class="card-header">
+    <h2 class="card-title">Manutenção de Turmas:</h2>
+  </div>
+  <div class="card-body">
+    <div class="card-container">
+      <div>
+        <form #formTurma="ngForm" (ngSubmit)="onSubmit(formTurma)" class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Nome</mat-label>
+            <input matInput placeholder="Ex. Turma 17:30" [(ngModel)]="turma.nome" name="nome">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Atividade</mat-label>
+            <input matInput placeholder="musculação" [(ngModel)]="turma.atividade" name="atividade">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Horário</mat-label>
+            <input matInput placeholder="Ex. 20:00 - 21:30" [(ngModel)]="turma.horario" name="horario">
+          </mat-form-field>
+          <hr>
+          <button mat-button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+      </div>
+    <br>
+        <div class="content">
+          <h3 class="ui-table-thead"> Alunos matriculados</h3>
+          <table mat-table [dataSource]="dataSource" class="table table-striped">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="Selecione">
+              <th mat-header-cell *matHeaderCellDef scope="col">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()"
+                              [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(row) : null"
+                              [checked]="selection.isSelected(row)"
+                              [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="Nome">
+              <th mat-header-cell *matHeaderCellDef scope="col"> Nome </th>
+              <td mat-cell *matCellDef="let aluno"> {{aluno.nome}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="CPF">
+              <th mat-header-cell *matHeaderCellDef scope="col"> CPF </th>
+              <td mat-cell *matCellDef="let aluno"> {{aluno.cpf}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="Telefone">
+              <th mat-header-cell *matHeaderCellDef scope="col"> Telefone </th>
+              <td mat-cell *matCellDef="let aluno"> {{aluno.telefone}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="Endereço">
+              <th mat-header-cell *matHeaderCellDef scope="col"> Endereço </th>
+              <td mat-cell *matCellDef="let aluno"> {{aluno.endereco}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="Nascimento">
+              <th mat-header-cell *matHeaderCellDef > Nascimento </th>
+              <td mat-cell *matCellDef="let aluno"> {{aluno.dataNascimento.toLocaleDateString()}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                (click)="selection.toggle(row)">
+            </tr>
+          </table>
+        <div>
+          <button mat-button type="button" class="btn btn-primary" (click)="remover()">remover</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

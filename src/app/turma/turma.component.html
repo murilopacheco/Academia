@@ -1,0 +1,61 @@
+<div class="card" style="width: 100%">
+  <div class="card-header">
+    <h2 class="card-title">Listagem de Turmas:</h2>
+  </div>
+  <div class="card-body">
+
+<!--             <div class="example-full-width">-->
+<!--                <tr *ngFor="let aluno of turma.alunos">-->
+<!--                  <td> {{ aluno.nome}} </td>-->
+<!--                  <td> {{ aluno.cpf}} </td>-->
+<!--                  <td> {{ aluno.telefone}} </td>-->
+<!--                  <td> {{ aluno.endereco}} </td>-->
+<!--                  <td> {{ aluno.dataNascimento}} </td>-->
+
+<!--                </tr>-->
+<!--              </div>-->
+
+    <table mat-table [dataSource]="dataSource" matSort class="table table-striped">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Nome </th>
+        <td mat-cell *matCellDef="let turma"> {{turma.nome}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="atividade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Atividade </th>
+        <td mat-cell *matCellDef="let turma"> {{turma.atividade}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="horario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Horário </th>
+        <td mat-cell *matCellDef="let turma"> {{turma.horario}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Ações">
+        <th mat-header-cell *matHeaderCellDef > Ações </th>
+        <td mat-cell *matCellDef="let turma">
+          <!--            <a [routerLink]="['/turmaEdit', turma.nome.toString()]">-->
+          <!--              <a routerLink="/turmaEdit" [queryParams]="turma">-->
+          <button mat-button type="button" class="btn btn-primary" (click)="editar(turma)">editar</button>
+          <!--            </a>-->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+</div>
+<div>
+  <a routerLink="/turmaDetalhe">
+    <button mat-fab color="primary" >
+      <mat-icon>add</mat-icon>
+    </button>
+  </a>
+
+
+</div>
