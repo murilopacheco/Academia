@@ -79,8 +79,6 @@ p {
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;
-  -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
   text-decoration-skip-ink: none; }
@@ -8341,3 +8339,7 @@ a[data-toggle="collapse"] {
 
 .subscribe-form .form-control {
   background: #3b4ec6; }
+.active-route{
+  color:black !important;
+  background-color:rgba(255, 255, 255, 0.5) !important;
+}

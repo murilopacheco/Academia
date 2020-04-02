@@ -6,13 +6,19 @@ import {MatInputModule} from '@angular/material/input';
 import {BrowserModule} from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatDatepickerModule} from '@angular/material/datepicker'; // <-- NgModel lives here
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {AlunoRoutingModule} from './aluno.routing.module';
+import { AlunoDetalheComponent } from './aluno-detalhe/aluno-detalhe.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTableModule} from '@angular/material/table';
+import {AlunoService} from './aluno.service'; // <-- NgModel lives here
 
 
 
 
 @NgModule({
-  declarations: [AlunoComponent],
+  declarations: [AlunoComponent, AlunoDetalheComponent],
   exports: [
     AlunoComponent
   ],
@@ -23,7 +29,14 @@ import {MatDatepickerModule} from '@angular/material/datepicker'; // <-- NgModel
     MatInputModule,
     FormsModule,
     MatButtonModule,
-    MatDatepickerModule
-  ]
+    MatDatepickerModule,
+    MatNativeDateModule,
+    AlunoRoutingModule,
+    MatIconModule,
+    MatTableModule
+  ],
+  providers: [
+    AlunoService
+  ],
 })
 export class AlunoModule { }
