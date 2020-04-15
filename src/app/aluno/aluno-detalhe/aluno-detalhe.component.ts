@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {AlunoDTO} from '../alunoDTO';
 import {NgForm} from '@angular/forms';
+import {AlunoService} from '../aluno.service';
 
 @Component({
   selector: 'app-aluno-detalhe',
@@ -26,22 +27,27 @@ import {NgForm} from '@angular/forms';
 })
 export class AlunoDetalheComponent implements OnInit {
 
-  constructor() { }
+  constructor(private alunoService: AlunoService) { }
 
   aluno: AlunoDTO =  {
+    id: null,
     nome: null,
     cpf: null,
     telefone: null,
     endereco: null,
-    dataNascimento: null
+    dataNascimento: null,
+    email: null
   };
 
   ngOnInit(): void {}
 
   onSubmit(f: NgForm) {
     this.aluno = (f.value);
-    console.log(this.aluno);  // { first: '', last: '' }
-    console.log(f.valid);  // false
-    console.log(f.value);
+    if (this.aluno.id === null) {
+      console.log('id null', this.aluno);
+      this.alunoService.saveAluno(this.aluno);
+    } else {
+      this.alunoService.updateAluno(this.aluno);
+    }
   }
 }

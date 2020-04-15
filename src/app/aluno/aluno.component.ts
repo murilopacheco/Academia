@@ -1,12 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlunoDTO} from './alunoDTO';
 import {NgForm} from '@angular/forms';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter , MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
+import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, } from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {AlunoService} from './aluno.service';
+
+
 
 
 @Component({
@@ -31,27 +32,38 @@ import {AlunoService} from './aluno.service';
 })
 export class AlunoComponent implements OnInit {
 
-  constructor(private alunoService: AlunoService) { }
-
-  alunos: AlunoDTO[] = this.alunoService.getAlunos();
+  constructor(private alunoService: AlunoService) {
+  }
+  alunos: AlunoDTO[];
 
   aluno: AlunoDTO =  {
+    id: null,
     nome: null,
     cpf: null,
     telefone: null,
     endereco: null,
-    dataNascimento: null
+    dataNascimento: null,
+    email: null
   };
 
   displayedColumns: string[] = ['Nome', 'CPF', 'Telefone', 'Endereço', 'Ações'];
-  dataSource = new MatTableDataSource(this.alunos);
+  dataSource;
 
   @ViewChild
     (MatSort, {static: true}) sort: MatSort;
 
+  errorMessage; sid: string;
+
+  alunos2: AlunoDTO[];
+
 
   ngOnInit(): void {
-    this.dataSource.sort = this.sort;
+    this.alunoService.list().subscribe(dados => {
+      this.alunos = dados;
+      this.dataSource = new MatTableDataSource(this.alunos);
+      this.setarLista(this.alunos);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   onSubmit(f: NgForm) {
@@ -65,4 +77,8 @@ export class AlunoComponent implements OnInit {
     console.log(aluno);
   }
 
+  setarLista(alunos: AlunoDTO[]) {
+    this.alunos2 = alunos;
+    console.log(this.alunos2);
+  }
 }

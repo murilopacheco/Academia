@@ -6,6 +6,12 @@
     <div class="card-container">
       <div>
         <form #formUsuario="ngForm" (ngSubmit)="onSubmit(formUsuario)" class="example-form">
+          <div style="display: none">
+            <mat-form-field class="example-full-width">
+              <mat-label>ID</mat-label>
+              <input matInput [ngModel]="aluno?.id" name="id">
+            </mat-form-field>
+          </div>
           <mat-form-field class="example-full-width">
             <mat-label>Nome</mat-label>
             <input type="text" matInput placeholder="Ex. João" [(ngModel)]="aluno.nome" name="nome">
@@ -24,6 +30,11 @@
           <mat-form-field class="example-full-width">
             <mat-label>Endereço</mat-label>
             <input matInput placeholder="Ex. Rua teste setor central" [(ngModel)]="aluno.endereco" name="endereco">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="email@email.com" [(ngModel)]="aluno.email" name="email">
           </mat-form-field>
 
           <mat-form-field>

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TurmaComponent } from './turma.component';
+import {TurmaComponent} from './turma.component';
 
 describe('TurmaComponent', () => {
   let component: TurmaComponent;

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TurmaService } from './turma.service';
+import {TurmaService} from './turma.service';
 
 describe('TurmaService', () => {
   let service: TurmaService;

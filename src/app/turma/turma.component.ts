@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild } from '@angular/core';
 import {TurmaDTO} from './turmaDTO';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TurmaService} from './turma.service';
 import {MatSort} from '@angular/material/sort';
+
 
 
 @Component({
@@ -26,9 +27,14 @@ export class TurmaComponent implements OnInit {
 
   displayedColumns: string[] = ['nome', 'atividade', 'horario', 'Ações'];
 
+  turmas: TurmaDTO[];
+
     ngOnInit(): void {
-      this.dataSource = new MatTableDataSource(this.turmaService.getTurmas());
-      this.dataSource.sort = this.sort;
+      this.turmaService.list().subscribe(dados => {
+        this.turmas = dados;
+        this.dataSource = new MatTableDataSource(this.turmas);
+        this.dataSource.sort = this.sort;
+      });
   }
 
 

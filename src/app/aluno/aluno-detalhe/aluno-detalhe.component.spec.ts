@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AlunoDetalheComponent } from './aluno-detalhe.component';
+import {AlunoDetalheComponent} from './aluno-detalhe.component';
 
 describe('AlunoDetalheComponent', () => {
   let component: AlunoDetalheComponent;
