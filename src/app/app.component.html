@@ -1,52 +1,56 @@
-<div class="pos-f-t">
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-      <h4 class="text-white">Collapsed content</h4>
-      <span class="text-muted">Toggleable via the navbar brand.</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="isLoggedIn$ | async">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" hrouterLink="">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <div>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+      <a class="nav-link" (click)="onLogout()" *ngIf="isLoggedIn$ | async">Logout</a>
+        </li>
+      </ul>
     </div>
   </div>
-  <nav class="navbar navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-            aria-expanded="false" aria-label="Toggle navigation" (click)="toogleSideBar()">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </nav>
-</div>
+</nav>
 
 <body>
 
 <div class="wrapper d-flex align-items-stretch">
-  <nav id="sidebar">
-    <div class="p-4">
-      <h1><a routerLink="" class="logo">Academia 2.0 <span>Sistema gerenciador de academias</span></a></h1>
-      <ul class="list-unstyled components mb-5">
-        <li class="active">
-          <a routerLink="/aluno" routerLinkActive="active-route"><span class="active mr-3"></span> Alunos</a>
-        </li>
-        <li>
-          <a routerLink="/turma" routerLinkActive="active-route"><span class="fa  mr-3"></span> Turma</a>
-        </li>
-        <li>
-          <a href="#" routerLinkActive="active-route"><span class="fa fa-briefcase mr-3"></span> Works</a>
-        </li>
-        <li>
-          <a href="#" routerLinkActive="active-route"><span class="fa fa-sticky-note mr-3"></span> Blog</a>
-        </li>
-        <li>
-          <a href="#" routerLinkActive="active-route"><span class="fa fa-suitcase mr-3"></span> Gallery</a>
-        </li>
-        <li>
-          <a href="#" routerLinkActive="active-route"><span class="fa fa-cogs mr-3"></span> Services</a>
-        </li>
-        <li>
-          <a href="#" routerLinkActive="active-route"><span class="fa fa-paper-plane mr-3"></span> Contacts</a>
-        </li>
-      </ul>
-
-
-    </div>
-  </nav>
+  <div *ngIf="isLoggedIn$ | async">
+    <nav id="sidebar">
+      <div class="p-4">
+        <h1><a routerLink="" class="logo">Academia 2.0 <span>Sistema gerenciador de academias</span></a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a routerLink="/aluno" routerLinkActive="active-route"><span class="active mr-3"></span> Alunos</a>
+          </li>
+          <li>
+            <a routerLink="/turma" routerLinkActive="active-route"><span class="fa  mr-3"></span> Turma</a>
+          </li>
+          <li>
+            <a href="#" routerLinkActive="active-route"><span class="fa fa-briefcase mr-3"></span> Works</a>
+          </li>
+          <li>
+            <a href="#" routerLinkActive="active-route"><span class="fa fa-sticky-note mr-3"></span> Blog</a>
+          </li>
+          <li>
+            <a href="#" routerLinkActive="active-route"><span class="fa fa-suitcase mr-3"></span> Gallery</a>
+          </li>
+          <li>
+            <a href="#" routerLinkActive="active-route"><span class="fa fa-cogs mr-3"></span> Services</a>
+          </li>
+          <li>
+            <a href="#" routerLinkActive="active-route"><span class="fa fa-paper-plane mr-3"></span> Contacts</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
   <div id="content" class="p-4 p-md-5 pt-5">
     <router-outlet></router-outlet>
   </div>

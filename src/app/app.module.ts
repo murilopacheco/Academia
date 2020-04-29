@@ -7,6 +7,8 @@ import {AlunoModule} from './aluno/aluno.module';
 import {TurmaModule} from './turma/turma.module';
 import {AppRoutingModule} from './app.routing.module';
 import {HttpClientModule} from '@angular/common/http';
+import {LoginModule} from './login/login.module';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -18,8 +20,10 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserAnimationsModule,
     AlunoModule,
     TurmaModule,
+    LoginModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

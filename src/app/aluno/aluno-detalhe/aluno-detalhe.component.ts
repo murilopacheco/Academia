@@ -4,6 +4,9 @@ import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdap
 import {AlunoDTO} from '../alunoDTO';
 import {NgForm} from '@angular/forms';
 import {AlunoService} from '../aluno.service';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute, Params} from '@angular/router';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-aluno-detalhe',
@@ -27,7 +30,10 @@ import {AlunoService} from '../aluno.service';
 })
 export class AlunoDetalheComponent implements OnInit {
 
-  constructor(private alunoService: AlunoService) { }
+  constructor(private alunoService: AlunoService,
+              private route: ActivatedRoute) { }
+
+  inscricao: Subscription;
 
   aluno: AlunoDTO =  {
     id: null,
@@ -39,12 +45,31 @@ export class AlunoDetalheComponent implements OnInit {
     email: null
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.inscricao = this.route.params.subscribe(
+      (params: Params) => {
+        const id: number = +params.id;
+        if (id) {
+          this.alunoService.getAlunoByID(id).subscribe(dados => {
+            this.aluno = dados;
+          }, error => {console.error(error); });
+        } else {
+          this.aluno = {
+            id: null,
+            nome: '',
+            cpf: '',
+            telefone: '',
+            endereco: '',
+            dataNascimento: null,
+            email: ''
+          };
+        }
+      });
+  }
 
   onSubmit(f: NgForm) {
     this.aluno = (f.value);
     if (this.aluno.id === null) {
-      console.log('id null', this.aluno);
       this.alunoService.saveAluno(this.aluno);
     } else {
       this.alunoService.updateAluno(this.aluno);

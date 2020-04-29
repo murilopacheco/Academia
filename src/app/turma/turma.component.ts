@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild } from '@angular/core';
 import {TurmaDTO} from './turmaDTO';
 import {MatTableDataSource} from '@angular/material/table';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {TurmaService} from './turma.service';
 import {MatSort} from '@angular/material/sort';
 
@@ -14,12 +14,9 @@ import {MatSort} from '@angular/material/sort';
 })
 export class TurmaComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
               private turmaService: TurmaService
               ) { }
-
-  public isEditable =  false;
 
   dataSource: MatTableDataSource<TurmaDTO>;
   @ViewChild
