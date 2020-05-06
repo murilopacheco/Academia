@@ -52,7 +52,6 @@ export class AlunoComponent implements OnInit {
   }
 
   editar(aluno: AlunoDTO) {
-    console.log(aluno);
     this.router.navigate(['/alunoEdit/', aluno.id]);
   }
 }
