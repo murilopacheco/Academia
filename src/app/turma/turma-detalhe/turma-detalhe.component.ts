@@ -1,13 +1,14 @@
 import {Component, OnInit, AfterViewInit, AfterContentChecked, ViewChild} from '@angular/core';
 import {TurmaDTO} from '../turmaDTO';
 import {AlunoDTO} from '../../aluno/alunoDTO';
-import {NgForm} from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {empty, Subscription} from 'rxjs';
 import {TurmaService} from '../turma.service';
 import {MatSort} from '@angular/material/sort';
+import {catchError} from 'rxjs/operators';
 
 
 @Component({
@@ -20,10 +21,12 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
 
   constructor( private route: ActivatedRoute,
                private  turmaService: TurmaService,
-               private router: Router) {
+               private router: Router,
+               private fb: FormBuilder) {
   }
-
+  formTurma: FormGroup;
   public turma: TurmaDTO;
+  public salvo: boolean;
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatTable, {static: false}) table: MatTable<any>;
@@ -35,12 +38,19 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
   selection = new SelectionModel<AlunoDTO>(true, []);
 
   ngOnInit() {
+    this.salvo = false;
     this.inscricao = this.route.params.subscribe(
       (params: Params) => {
         const id: number = +params.id;
         if (id) {
           this.turmaService.getTurmaByID(id).subscribe(dados => {
             this.turma = dados;
+            this.formTurma = this.fb.group({
+              id: [this.turma.id],
+              nome: [this.turma.nome, Validators.required],
+              atividade: [this.turma.atividade],
+              horario: [this.turma.horario]
+            });
           }, error => {console.error(error); });
         } else {
           this.turma = {
@@ -48,6 +58,12 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
             alunos: [],
           };
           this.dataSource = new MatTableDataSource<AlunoDTO>([]);
+          this.formTurma = this.fb.group({
+            id: [this.turma.id],
+            nome: [this.turma.nome, Validators.required],
+            atividade: [this.turma.atividade],
+            horario: [this.turma.horario]
+          });
         }
       });
   }
@@ -70,14 +86,30 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
 
 
 
-  onSubmit(f: NgForm) {
-    this.turma = (f.value);
+  onSubmit() {
+    this.turma = (this.formTurma.value);
     if (this.turma.id === null) {
-      this.turmaService.save(this.turma);
+      this.turmaService.save(this.turma).subscribe(() => {
+        this.turmaService.showMessage('Turma salva com sucesso!', false);
+        this.router.navigate(['/turma']);
+      });
     } else {
-      this.turmaService.update(this.turma);
+      this.turmaService.update(this.turma).subscribe(() => {
+        this.turmaService.showMessage('Turma atualizada com sucesso!', false);
+        this.router.navigate(['/turma']);
+      });
     }
   }
+
+  // onSubmit() {
+  //   this.turma = (this.formTurma.value);
+  //   if (this.turma.id === null) {
+  //     this.turmaService.save(this.turma);
+  //     this.salvo = true;
+  //   } else {
+  //     this.turmaService.update(this.turma);
+  //   }
+  // }
 
   /** Se o número de elementos selecionados corresponde ao número total de linhas. */
   isAllSelected() {
@@ -102,7 +134,6 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
   }
 
   remover() {
-    console.log(this.selection.selected);
     const valuesToRemove = this.selection.selected;
 
     const filteredItems = this.turma.alunos.filter(item => !valuesToRemove.includes(item));
@@ -110,13 +141,17 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
     this.dataSource = new MatTableDataSource<AlunoDTO>(filteredItems);
   }
 
-  delete(turma: TurmaDTO, f: NgForm) {
-    this.turmaService.delete(turma);
-   // this.router.navigate(['/turma/']);
-   //  f.setValue("");
-    f.form.reset();
+  delete(turma: TurmaDTO) {
+    this.turmaService.delete(turma).subscribe(() => {
+      this.turmaService.showMessage('Turma deletada com sucesso!', false);
+      this.router.navigate(['/turma']);
+    });
   }
 
-
-
+  isFieldInvalid(field: string) { // {6}
+    return (
+      (!this.formTurma.get(field).valid && this.formTurma.get(field).touched) ||
+      (this.formTurma.get(field).untouched && this.formTurma) || (this.formTurma.get(field).errors)
+    );
+  }
 }

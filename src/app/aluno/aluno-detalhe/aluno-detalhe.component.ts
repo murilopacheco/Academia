@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {AlunoDTO} from '../alunoDTO';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlunoService} from '../aluno.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -51,7 +51,7 @@ export class AlunoDetalheComponent implements OnInit {
             this.aluno = dados;
             this.formUsuario = this.fb.group({     // {5}
               id: [this.aluno.id],
-              nome: [this.aluno.nome, Validators.required],
+              nome: [this.aluno.nome, [Validators.required, Validators.minLength(3)]],
               cpf: [this.aluno.cpf, Validators.required],
               telefone: [this.aluno.telefone],
               endereco: [this.aluno.email],
@@ -86,7 +86,6 @@ export class AlunoDetalheComponent implements OnInit {
   onSubmit() {
     if (this.formUsuario.valid) {
       this.aluno = (this.formUsuario.value);
-      console.log(this.aluno);
       if (this.aluno.id === null) {
         this.alunoService.saveAluno(this.aluno);
       } else {
