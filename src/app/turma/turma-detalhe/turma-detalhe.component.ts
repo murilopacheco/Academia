@@ -1,14 +1,13 @@
-import {Component, OnInit, AfterViewInit, AfterContentChecked, ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, AfterContentChecked, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {TurmaDTO} from '../turmaDTO';
 import {AlunoDTO} from '../../aluno/alunoDTO';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {empty, Subscription} from 'rxjs';
 import {TurmaService} from '../turma.service';
 import {MatSort} from '@angular/material/sort';
-import {catchError} from 'rxjs/operators';
 
 
 @Component({
@@ -22,7 +21,8 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
   constructor( private route: ActivatedRoute,
                private  turmaService: TurmaService,
                private router: Router,
-               private fb: FormBuilder) {
+               private fb: FormBuilder,
+               private changeDetectorRefs: ChangeDetectorRef) {
   }
   formTurma: FormGroup;
   public turma: TurmaDTO;
@@ -111,34 +111,35 @@ export class TurmaDetalheComponent implements OnInit, AfterViewInit, AfterConten
   //   }
   // }
 
-  /** Se o número de elementos selecionados corresponde ao número total de linhas. */
+  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Seleciona todas as linhas se elas não estiverem todas selecionadas; caso contrário, seleção clara. */
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-      this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  /** O rótulo da caixa de seleção na linha passada */
+  /** The label for the checkbox on the passed row */
   checkboxLabel(row?: AlunoDTO): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.cpf + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
-
   remover() {
     const valuesToRemove = this.selection.selected;
 
     const filteredItems = this.turma.alunos.filter(item => !valuesToRemove.includes(item));
-    console.log(filteredItems);
     this.dataSource = new MatTableDataSource<AlunoDTO>(filteredItems);
+    this.selection =  new SelectionModel<AlunoDTO>(true, []);
+    this.changeDetectorRefs.detectChanges();
+    this.table.renderRows();
   }
 
   delete(turma: TurmaDTO) {

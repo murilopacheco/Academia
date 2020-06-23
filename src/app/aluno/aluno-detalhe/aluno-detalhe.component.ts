@@ -5,8 +5,9 @@ import {AlunoDTO} from '../alunoDTO';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlunoService} from '../aluno.service';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {MatTableDataSource} from '@angular/material/table';
+import {TurmaDTO} from '../../turma/turmaDTO';
 
 @Component({
   selector: 'app-aluno-detalhe',
@@ -32,6 +33,7 @@ export class AlunoDetalheComponent implements OnInit {
 
   constructor(private alunoService: AlunoService,
               private route: ActivatedRoute,
+              private router: Router,
               private fb: FormBuilder) { }
 
   formUsuario: FormGroup;
@@ -87,13 +89,25 @@ export class AlunoDetalheComponent implements OnInit {
     if (this.formUsuario.valid) {
       this.aluno = (this.formUsuario.value);
       if (this.aluno.id === null) {
-        this.alunoService.saveAluno(this.aluno);
+        this.alunoService.saveAluno(this.aluno).subscribe(() => {
+          this.alunoService.showMessage('Aluno salvo com sucesso!', false);
+          this.router.navigate(['/aluno']);
+          this.formUsuario.reset();
+        });
       } else {
-        this.alunoService.updateAluno(this.aluno);
+        this.alunoService.updateAluno(this.aluno).subscribe(() => {
+          this.alunoService.showMessage('Aluno atualizado com sucesso!', false);
+          this.router.navigate(['/aluno']);
+        });
       }
-    } else {
-
     }
+  }
+
+  delete(aluno: AlunoDTO) {
+    this.alunoService.delete(aluno).subscribe(() => {
+      this.alunoService.showMessage('Aluno deletado com sucesso!', false);
+      this.router.navigate(['/aluno']);
+    });
   }
 
   isFieldInvalid(field: string) { // {6}

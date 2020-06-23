@@ -13,7 +13,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
 import {AlunoService} from './aluno.service';
 import {MatSortModule} from '@angular/material/sort';
-import {SimpleMaskDirective, SimpleMaskModule, SimpleMaskPipe} from 'ngx-ion-simple-mask';
+import {SimpleMaskModule} from 'ngx-ion-simple-mask';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -35,7 +36,8 @@ import {SimpleMaskDirective, SimpleMaskModule, SimpleMaskPipe} from 'ngx-ion-sim
     MatTableModule,
     MatSortModule,
     SimpleMaskModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
     AlunoService
